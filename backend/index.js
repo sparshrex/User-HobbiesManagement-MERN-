@@ -1,4 +1,3 @@
-// server.js
 import dotenv from 'dotenv'
 dotenv.config()
 import express from 'express'
@@ -84,7 +83,7 @@ app.delete('/api/data/:id', async (req, res) => {
 
 app.post('/api/send-email', async (req, res) => {
   const {users} = req.body;
-  
+  console.log(users);
   let htmlContent = `<h2>User Information</h2>`;
   
   for (let user of users) {
@@ -112,7 +111,7 @@ app.post('/api/send-email', async (req, res) => {
 
   let info = await transporter.sendMail({
       from: process.env.EMAIL_FROM,
-      to: process.env.EMAIL_TO,
+      to: 'tryambsachan69@gmail.com',
       subject: "User Information",
       html: htmlContent
   });

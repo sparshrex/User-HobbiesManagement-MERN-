@@ -20,7 +20,7 @@ function App() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/data");
+      const response = await axios.get("https://user-hobbies-management-mern.vercel.app/api/data");
       setData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -34,7 +34,7 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/data", formData);
+      await axios.post("https://user-hobbies-management-mern.vercel.app/api/data", formData);
       setFormData({ name: "", phoneNumber: "", email: "", hobbies: "" });
       fetchData();
     } catch (error) {
@@ -46,7 +46,7 @@ function App() {
   //   console.log('Update ID:', id);
 
   //   try {
-  //     await axios.post('http://localhost:5000/api/data', formData);
+  //     await axios.post('https://user-hobbies-management-mern.vercel.app//api/data', formData);
   //     setFormData({ name: '', phoneNumber: '', email: '', hobbies: '' });
   //     fetchData();
   //   } catch (error) {
@@ -56,7 +56,7 @@ function App() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/data/${id}`);
+      await axios.delete(`https://user-hobbies-management-mern.vercel.app/api/data/${id}`);
       console.log("Data deleted");
 
       setData((prevData) => prevData.filter((item) => item._id !== id));
@@ -87,7 +87,7 @@ function App() {
     }, 5000);
 
     try {
-      await axios.post("http://localhost:5000/api/send-email", { users: data });
+      await axios.post("https://user-hobbies-management-mern.vercel.app/api/send-email", { users: data });
 
       setTimeout(() => {
         setMsg("Email sent");

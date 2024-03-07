@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './App.css'
 
 function App() {
   const [data, setData] = useState([]);
@@ -47,20 +48,36 @@ function App() {
 
   const handleDelete = async (id) => {
     try {
-        // Implement your delete logic here
-        // For example, you can make a DELETE request to delete the data
         await axios.delete(`http://localhost:5000/api/data/${id}`);
         console.log('Data deleted');
 
-        // Remove the deleted row from the local state
         setData(prevData => prevData.filter(item => item._id !== id));
     } catch (error) {
         console.error('Error deleting data:', error);
     }
 };
 
+const [checkedItems, setCheckedItems] = useState([]);
+
+  const handleCheckboxChange = (event, item) => {
+    const isChecked = event.target.checked;
+
+    setCheckedItems(prevCheckedItems => {
+      if (isChecked) {
+        return [...prevCheckedItems, item];
+      } else {
+        return prevCheckedItems.filter(checkedItem => checkedItem._id !== item._id);
+      }
+    });
+  };
+
+  const sendEmail = async (data) => {
+        console.log(data);
+  }
+
   return (
     <div>
+      <div className='form-container'>
       <form onSubmit={handleSubmit}>
         <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" />
         <input type="text" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} placeholder="Phone Number" />
@@ -68,10 +85,13 @@ function App() {
         <input type="text" name="hobbies" value={formData.hobbies} onChange={handleChange} placeholder="Hobbies" />
         <button type="submit">Save</button>
       </form>
+      </div>
 
+<div className='table-container'>
       <table>
         <thead>
           <tr>
+            <th></th>
             <th>ID</th>
             <th>Name</th>
             <th>Phone Number</th>
@@ -83,6 +103,9 @@ function App() {
         <tbody>
           {data.map((item) => (
             <tr key={item._id}>
+               <td>
+                 <input type="checkbox" onChange={(event) => handleCheckboxChange(event,item)} />
+               </td>
               <td>{item._id}</td>
               <td>{item.name}</td>
               <td>{item.phoneNumber}</td>
@@ -90,12 +113,18 @@ function App() {
               <td>{item.hobbies}</td>
               <td>
                 <button onClick={() => handleUpdate(item._id)}>Update</button>
-                <button onClick={() => handleDelete(item._id)}>Delete</button>
+                <button style={{backgroundColor:'red'}} onClick={() => handleDelete(item._id)}>Delete</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      </div>
+
+      <div className='send-email'>
+         <button onClick={() => sendEmail(checkedItems)}>Send Email</button>
+         <p>All above checked box data will be sent via email</p>
+      </div>
     </div>
   );
 }
